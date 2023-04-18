@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>My To-Do List App</title>
+    <style>
+      /* add some basic styling */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      
+      h1 {
+        text-align: center;
+      }
+      
+      #task-form {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+      }
+      
+      #task-input {
+        width: 70%;
+        margin-right: 10px;
+        padding: 5px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      
+      #task-button {
+        padding: 5px 10px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: #fff;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+      }
+      
+      #task-list {
+        list-style: none;
+        margin: 20px 0 0;
+        padding: 0;
+      }
+      
+      .task-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px 0;
+        padding: 10px;
+        background-color: #f2f2f2;
+        border-radius: 5px;
+      }
+      
+      .task-item button {
+        padding: 5px 10px;
+        font-size: 14px;
+        background-color: #f44336;
+        color: #fff;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>My To-Do List</h1>
+    
+    <form id="task-form">
+      <input type="text" id="task-input" placeholder="Add a new task">
+      <button type="submit" id="task-button">Add</button>
+    </form>
+    
+    <ul id="task-list">
+      <!-- tasks will be added dynamically here -->
+    </ul>
+    
+    <script>
+      const form = document.getElementById('task-form');
+      const input = document.getElementById('task-input');
+      const taskList = document.getElementById('task-list');
+      
+      let tasks = [];
+      
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const task = input.value.trim();
+        if (task) {
+          tasks.push(task);
+          renderTasks();
+          input.value = '';
+        }
+      });
+      
+      function renderTasks() {
+        taskList.innerHTML = '';
+        for (let i = 0; i < tasks.length; i++) {
+          const taskItem = document.createElement('li');
+          taskItem.classList.add('task-item');
+          taskItem.innerHTML = `
+            <span>${tasks[i]}</span>
+            <button class="delete-button" data-index="${i}">Delete</button>
+          `;
+          taskList.appendChild(taskItem);
+        }
+        const deleteButtons = document.querySelectorAll('.delete-button');
+        deleteButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const index = parseInt(this.getAttribute('data-index'));
+            tasks.splice(index, 1);
+            renderTasks();
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
